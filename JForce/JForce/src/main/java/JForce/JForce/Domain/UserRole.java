@@ -2,7 +2,7 @@ package JForce.JForce.Domain;
 
 public enum UserRole
 {
-    ADMIN,
+    Admin,
     Human_Resources,
-    Inventory
+    Inventory_Manager
 }

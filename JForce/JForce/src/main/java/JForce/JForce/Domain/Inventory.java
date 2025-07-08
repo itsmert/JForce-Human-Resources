@@ -1,9 +1,7 @@
 package JForce.JForce.Domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -27,7 +25,8 @@ public class Inventory {
     @Column(name = "type", nullable = false, length = 100)
     private String type;
 
-    @Column(name = "entry_date",nullable = false)
+    @FutureOrPresent(message = "Entry date cannot be in the past")
+    @Column(name = "entry_date", nullable = false)
     private LocalDate entryDate;
 
     @Size(max = 100)
@@ -42,8 +41,76 @@ public class Inventory {
     @Column(name = "serial_number", length = 100,nullable = false)
     private String serialNumber;
 
-    @Size(max = 50)
-    @Column(name = "status", length = 50,nullable = false)
-    private String status;
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private InventoryStatus status;
 
+
+    public Staff getAssignedStaff() {
+        return assignedStaff;
+    }
+
+    public void setAssignedStaff(Staff assignedStaff) {
+        this.assignedStaff = assignedStaff;
+    }
+
+    public InventoryStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(InventoryStatus status) {
+        this.status = status;
+    }
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public LocalDate getEntryDate() {
+        return entryDate;
+    }
+
+    public void setEntryDate(LocalDate entryDate) {
+        this.entryDate = entryDate;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "staff_id")
+    private Staff assignedStaff;
 }

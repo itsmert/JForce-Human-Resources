@@ -44,8 +44,6 @@ public class StaffLoginResponseDTO {
         return role;
     }
 
-    // Setters (optional, if needed)
-
     public void setUsername(String username) {
         this.username = username;
     }
@@ -57,8 +55,6 @@ public class StaffLoginResponseDTO {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
-
 
     public void setRole(String role) {
         this.role = role;

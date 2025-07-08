@@ -1,74 +1,30 @@
-package JForce.JForce.Domain;
+package JForce.JForce.Service.DTO;
 
-
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-import java.time.LocalDate;
-import JForce.JForce.Domain.UserRole;
-import jakarta.validation.constraints.Pattern;
 
+import java.time.LocalDate;
 
 @Getter
 @Setter
-@Entity
-@Table(name = "\"Staff\"")
-public class Staff {
-    @Id
-    @ColumnDefault("nextval('staff_id_seq')")
-    @Column(name = "id", nullable = false)
+public class StaffRequestDTO {
+
     private Long id;
-
-    @Column(name = "username", nullable = false, length = 50)
     private String username;
-
-    @Column(name = "name", nullable = false, length = 50)
     private String name;
-
-    @Column(name = "surname", nullable = false, length = 50)
     private String surname;
-
-    @Column(name = "sex", nullable = false, length = Integer.MAX_VALUE)
     private String sex;
-
-    @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
-
-    @Column(name = "marital_status", nullable = false, length = 20)
     private String maritalStatus;
-
-    @Column(name = "turkish_identity", nullable = false, length = 11)
-    @Pattern(regexp = "^[1-9][0-9]{9}[02468]$")
     private String turkishIdentity;
-
-    @Column(name = "registration_number", nullable = false)
     private Integer registrationNumber;
-
-    @Column(name = "graduation_status", length = 30)
     private String graduationStatus;
-
-    @ManyToOne
-    @JoinColumn(name = "unit_id", nullable = false)
-    private Unit unit;
-
-    @ManyToOne
-    @JoinColumn(name = "work_id", nullable = false)
-    private Work work;
-
-    @Column(name = "working_status", nullable = false)
-    private Boolean workingStatus = false;
-
-    @Lob
-    @Column(name = "photo")
+    private Integer unitId;
+    private Integer workId;
+    private Boolean workingStatus;
     private byte[] photo;
-
-    @Column(name = "password", nullable = false, length = Integer.MAX_VALUE)
     private String password;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private UserRole role;
+    private String role;
 
     public Long getId() {
         return id;
@@ -150,20 +106,20 @@ public class Staff {
         this.graduationStatus = graduationStatus;
     }
 
-    public Unit getUnit() {
-        return unit;
+    public Integer getUnitId() {
+        return unitId;
     }
 
-    public void setUnit(Unit unit) {
-        this.unit = unit;
+    public void setUnitId(Integer unitId) {
+        this.unitId = unitId;
     }
 
-    public Work getWork() {
-        return work;
+    public Integer getWorkId() {
+        return workId;
     }
 
-    public void setWork(Work work) {
-        this.work = work;
+    public void setWorkId(Integer workId) {
+        this.workId = workId;
     }
 
     public Boolean getWorkingStatus() {
@@ -190,11 +146,11 @@ public class Staff {
         this.password = password;
     }
 
-    public UserRole getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(UserRole role) {
+    public void setRole(String role) {
         this.role = role;
     }
 }
