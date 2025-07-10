@@ -16,12 +16,15 @@ import jakarta.validation.constraints.Pattern;
 @Table(name = "\"Staff\"")
 public class Staff {
     @Id
-    @ColumnDefault("nextval('staff_id_seq')")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
     @Column(name = "username", nullable = false, length = 50)
     private String username;
+
+    @Column(name="mail",nullable = false,length = 100)
+    private String mail;
 
     @Column(name = "name", nullable = false, length = 50)
     private String name;
@@ -196,5 +199,13 @@ public class Staff {
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 }

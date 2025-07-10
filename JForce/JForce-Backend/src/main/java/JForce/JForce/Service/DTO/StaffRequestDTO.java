@@ -2,12 +2,14 @@ package JForce.JForce.Service.DTO;
 
 import lombok.Getter;
 import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
 public class StaffRequestDTO {
+
 
     private Long id;
     private String username;
@@ -19,12 +21,25 @@ public class StaffRequestDTO {
     private String turkishIdentity;
     private Integer registrationNumber;
     private String graduationStatus;
-    private Integer unitId;
-    private Integer workId;
+    @JsonProperty("unit_id")
+    private Integer unit_id;
+    @JsonProperty("work_id")
+
+    private Integer work_id;
     private Boolean workingStatus;
     private byte[] photo;
     private String password;
     private String role;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    private String email;
 
     public Long getId() {
         return id;
@@ -106,21 +121,7 @@ public class StaffRequestDTO {
         this.graduationStatus = graduationStatus;
     }
 
-    public Integer getUnitId() {
-        return unitId;
-    }
 
-    public void setUnitId(Integer unitId) {
-        this.unitId = unitId;
-    }
-
-    public Integer getWorkId() {
-        return workId;
-    }
-
-    public void setWorkId(Integer workId) {
-        this.workId = workId;
-    }
 
     public Boolean getWorkingStatus() {
         return workingStatus;
@@ -152,5 +153,21 @@ public class StaffRequestDTO {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Integer getUnit_id() {
+        return unit_id;
+    }
+
+    public void setUnit_id(Integer unit_id) {
+        this.unit_id = unit_id;
+    }
+
+    public Integer getWork_id() {
+        return work_id;
+    }
+
+    public void setWork_id(Integer work_id) {
+        this.work_id = work_id;
     }
 }

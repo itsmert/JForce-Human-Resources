@@ -18,6 +18,26 @@ public class AuthController {
     private final StaffService staffService;
     private final JWTUtil jwtUtil;
 
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestParam String username) {
+        staffService.sendPasswordResetEmailIfUserExists(username);
+        return ResponseEntity.ok("If the user exists, a reset email has been sent.");
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> body) {
+        String token = body.get("token");
+        String newPassword = body.get("newPassword");
+
+        boolean success = staffService.resetPasswordWithToken(token, newPassword);
+        if (success) {
+            return ResponseEntity.ok("Password reset successfully.");
+        } else {
+            return ResponseEntity.badRequest().body("Invalid or expired token.");
+        }
+    }
+
     public AuthController(StaffService staffService, JWTUtil jwtUtil) {
         this.staffService = staffService;
         this.jwtUtil = jwtUtil;

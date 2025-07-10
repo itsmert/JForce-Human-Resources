@@ -35,7 +35,7 @@ public class JWTUtil {
     }
 
     /**
-     * Basically Validatefor token whom entered system with which token basic on java as known encrpytion hashing
+     * Basically Validatefor token who'm entered system with which token basic on java as known encrpytion hashing
      * @param token
      * @return
      */

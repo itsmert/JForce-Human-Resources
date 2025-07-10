@@ -10,16 +10,21 @@ const ParticlesBackground = () => {
 
     const options = {
         preset: 'stars',
+        fpsLimit: 30,
         background: {
             color: '#5405cc',
         },
         particles: {
             move: {
                 enable: true,
-                speed: 0.5,
+                speed: 0.02,
                 direction: "none",
                 outModes: "bounce",
             },
+        },
+        reduceMotion: {
+            enable: true,
+            reduce: true
         },
         interactivity: {
             events: {

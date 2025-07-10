@@ -14,10 +14,14 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/staff")
-@RequiredArgsConstructor
+
 public class StaffController {
 
     private final StaffService staffService;
+
+    public StaffController(StaffService staffService) {
+        this.staffService = staffService;
+    }
 
     /**
      * Lists all staff with optional filtering by name, surname, turkish_identity and unit.
@@ -29,9 +33,10 @@ public class StaffController {
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String surname,
             @RequestParam(required = false) String turkish_identity,
-            @RequestParam(required = false) Integer unitId
+            @RequestParam(required = false) Integer unitId,
+            @RequestParam(required = false ) String email
     ) {
-        return ResponseEntity.ok(staffService.filterStaff(name, surname, turkish_identity, unitId));
+        return ResponseEntity.ok(staffService.filterStaff(name, surname, turkish_identity, unitId,email));
     }
 
     /**
@@ -45,7 +50,6 @@ public class StaffController {
     }
 
     @PostMapping("/save")
-    @PreAuthorize("hasAuthority('Human_Resources')")
     public ResponseEntity<Staff> saveStaff(@RequestBody StaffRequestDTO staffDTO) {
         return ResponseEntity.ok(staffService.saveStaff(staffDTO));
     }

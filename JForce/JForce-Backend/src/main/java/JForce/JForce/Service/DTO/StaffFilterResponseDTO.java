@@ -16,15 +16,17 @@ public class StaffFilterResponseDTO {
     private Integer registrationNumber;
     private String unitName;
     private String workName;
+    private String email;
 
     public StaffFilterResponseDTO(Long id, String name, String surname,
-                                  Integer registrationNumber, String unitName, String workName) {
+                                  Integer registrationNumber, String unitName, String workName, String email) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.registrationNumber = registrationNumber;
         this.unitName = unitName;
         this.workName = workName;
+        this.email = email;
     }
 
     public Long getId() {

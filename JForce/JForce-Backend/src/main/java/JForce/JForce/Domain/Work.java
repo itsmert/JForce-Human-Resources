@@ -15,7 +15,7 @@ import org.hibernate.annotations.ColumnDefault;
 public class Work {
     @Id
     @ColumnDefault("nextval('work_id_seq')")
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Integer id;
 
     @Column(name = "name", nullable = false, length = 50)

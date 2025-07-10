@@ -11,9 +11,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/inventory")
-@RequiredArgsConstructor
 public class InventoryController {
     private final InventoryService inventoryService;
+
+    public InventoryController(InventoryService inventoryService) {
+        this.inventoryService = inventoryService;
+    }
 
     @GetMapping("/filter")
     public ResponseEntity<List<Inventory>> filterInventory(@RequestParam(required = false) String type) {

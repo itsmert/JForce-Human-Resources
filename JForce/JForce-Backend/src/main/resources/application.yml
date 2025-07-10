@@ -9,6 +9,21 @@ spring:
   application:
     name: jforce
 
+
+  #I added on that Mail Server for that each that application so User Or Human Resources Will Be Notify Each Interaction
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: mertdamburaci1@gmail.com
+    password: wexewroagdpagyoa
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
   datasource:
     url: jdbc:postgresql://34.68.161.111:5432/postgres
     username: postgres
@@ -72,19 +87,6 @@ logging:
     gp.graduationproject.summer_internship_back: info
 
 
-#I added on that Mail Server for that each that application so User Or Human Resources Will Be Notify Each Interaction
-
-mail:
-  host: smtp.gmail.com
-  port: 587
-  username: mertdamburaci1@gmail.com
-  password: wexewroagdpagyoa
-  properties:
-    mail:
-      smtp:
-        auth: true
-        starttls:
-          enable: true
 
 
 jwt:

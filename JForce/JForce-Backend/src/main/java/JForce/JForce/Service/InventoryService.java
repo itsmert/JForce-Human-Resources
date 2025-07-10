@@ -15,11 +15,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+
 public class InventoryService {
 
     private final InventoryRepository inventoryRepository;
     private final StaffRepository staffRepository;
+
+    public InventoryService(InventoryRepository inventoryRepository, StaffRepository staffRepository) {
+        this.inventoryRepository = inventoryRepository;
+        this.staffRepository = staffRepository;
+    }
 
     public Inventory saveInventory(InventoryRequestDTO dto) {
         validateInventoryRequest(dto);
