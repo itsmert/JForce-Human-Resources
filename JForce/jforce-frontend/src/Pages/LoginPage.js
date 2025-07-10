@@ -16,18 +16,34 @@ const LoginPage = () => {
     const navigate = useNavigate();
 
     const handleLogin = async () => {
+        console.log("Login clicked"); // TEST amaçlı ekle
+
         try {
             const response = await axios.post('http://localhost:8080/auth/login', {
                 username,
                 password,
             });
 
-            const token = response.data.token;
-            localStorage.setItem('token', token);
+            console.log("Response:", response.data);
 
-            navigate('/dashboard');
+            const token = response.data.token;
+            const role = response.data.role;
+
+            localStorage.setItem("token", token);
+            localStorage.setItem("role", role);
+            localStorage.setItem("username", username);
+
+            if(role === "Human_Resources") {
+                navigate('/HumanResources-Dashboard');
+            } else if(role === "Admin") {
+                navigate('/Admin-Dashboard');
+            } else if(role === "Inventory_Manager") {
+                navigate('/InventoryManager-Dashboard');
+            }
+
         } catch (err) {
-            setError('Invalid username or password!');
+            console.error(err); // detaylı hata logu
+            toast.error("User not Found!");
         }
     };
     const handleForgotPassword = async () => {

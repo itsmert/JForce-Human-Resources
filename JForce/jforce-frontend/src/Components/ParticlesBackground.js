@@ -2,7 +2,6 @@ import React from 'react';
 import Particles from 'react-tsparticles';
 import { loadStarsPreset } from 'tsparticles-preset-stars';
 
-
 const ParticlesBackground = () => {
     const customInit = async (engine) => {
         await loadStarsPreset(engine);
@@ -45,7 +44,10 @@ const ParticlesBackground = () => {
         },
     };
 
-    return <Particles init={customInit} options={options} />;
-};
+    return (
+        <div className="particles-background">
+            <Particles init={customInit} options={options} />
+        </div>
+    );};
 
 export default ParticlesBackground;

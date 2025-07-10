@@ -53,6 +53,7 @@ public class EmailService {
             String emailContent = String.format("""
             <p>Dear %s,</p>
             <p>Your password has been reset.</p>
+            <p><b>If you did not do this, please ignore the email.</b</p>
             <p><b>New Password:</b> %s</p>
             <p>Please log in using this password and change it immediately for security reasons.</p>
             <p>Please not that this token is only available 15 minutes after send another request 24 hours later!</p>

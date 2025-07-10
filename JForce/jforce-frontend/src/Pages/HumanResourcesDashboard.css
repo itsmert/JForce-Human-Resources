@@ -1,0 +1,41 @@
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background-color: #5405cc; /* Sidebar ile aynı renk */
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.menu-header {
+    font-weight: bold;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.user-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-info {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.logout-button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}

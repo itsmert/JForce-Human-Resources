@@ -1,0 +1,41 @@
+.user-menu-wrapper {
+    position: relative;
+    color: white;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.username {
+    font-weight: bold;
+    padding: 6px 10px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.username:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #5405cc;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 1000;
+    width: 160px;
+    padding: 6px 0;
+}
+
+.dropdown-menu div {
+    padding: 10px 15px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.dropdown-menu div:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
