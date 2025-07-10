@@ -6,6 +6,8 @@ const HumanResourcesSideBar = ({ onNewStaff }) => {
         <div className="sidebar">
             <div className="sidebar-logo">
                 <img src="/logo.png" alt="Company Logo" className="logo-img" />
+                <div className="sidebar-title">Human Resources Panel</div>
+
             </div>
             <h3>📁 Menu</h3>
             <ul>

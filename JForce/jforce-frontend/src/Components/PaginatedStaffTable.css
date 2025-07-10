@@ -1,0 +1,45 @@
+.staff-table-container {
+    margin-top: 40px;
+    background-color: rgba(255, 255, 255, 0.07);
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+.staff-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.staff-table th, .staff-table td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.staff-table th {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.pagination {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.pagination button {
+    background-color: #4c00a9;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.pagination button.active {
+    background-color: #ff7f50;
+    font-weight: bold;
+}

@@ -4,7 +4,10 @@ import HumanResourcesSideBar from '../Components/HumanResourcesSideBar';
 import HumanResourcesStatsPanel from '../Components/HumanResourcesStatsPanel';
 import HumanResourcesUserMenu from '../Components/HumanResourcesUserMenu';
 import StaffInfoModal from '../Components/StaffInfoModal';
+import HRChartsPanel from '../Components/HRChartsPanel'; //
+import PaginatedStaffTable from '../Components/PaginatedStaffTable';
 import './HumanResourcesDashboard.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const HumanResourcesDashboard = () => {
     const [filters, setFilters] = useState({
@@ -19,7 +22,8 @@ const HumanResourcesDashboard = () => {
 
     const [staffList] = useState([
         { id: 1, name: 'Ali', surname: 'Yılmaz', identity: '12345678901', unit: 'IT', position: 'Backend Developer' },
-        { id: 2, name: 'Ayşe', surname: 'Demir', identity: '98765432100', unit: 'HR', position: 'HR Manager' }
+        { id: 2, name: 'Ayşe', surname: 'Demir', identity: '98765432100', unit: 'HR', position: 'HR Manager' },
+        // Buraya daha fazla örnek veri eklersen pagination görünür olacak
     ]);
 
     useEffect(() => {
@@ -68,15 +72,19 @@ const HumanResourcesDashboard = () => {
                         />
                     </div>
 
-                    {/* Asıl Olay Burada Buranın değişmesi lazım buraya dedigim gibi bir panel getirmem lazım
-                    istatisik olarak bakıcak her şeye ona göre yapıcak*/}
-                    <HumanResourcesStatsPanel />
+                    {/* İstatistiksel panel (grafikler) */}
+                    <HRChartsPanel staffList={staffList} />
+                    <PaginatedStaffTable staffList={filteredList} />
 
+                    {/* Dashboard başlık ve personel listesi */}
                     <div className="dashboard-box">
-                        <h2 className="dashboard-title">👤 Human Resources Dashboard</h2>
+                        <h2 className="dashboard-title"></h2>
 
-                        {/* Filtreler */}
-                        {/* Staff tablosu */}
+                        {/* Filtreler (isteğe bağlı olarak ekleyebiliriz) */}
+                        {/* <StaffFilter filters={filters} onChange={handleFilterChange} /> */}
+
+                        {/* Sayfalı personel tablosu */}
+                        <PaginatedStaffTable staffList={filteredList} onUpdate={handleUpdate} />
                     </div>
                 </div>
             </div>

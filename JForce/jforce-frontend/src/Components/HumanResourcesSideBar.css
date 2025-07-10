@@ -43,3 +43,40 @@
     max-height: 80%;
     object-fit: contain;
 }
+
+.sidebar li.active {
+    background-color: #36008a;
+    border-left: 4px solid #ffcc00;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+.sidebar li {
+    transition: all 0.3s ease;
+}
+.sidebar li:hover {
+    background-color: #4c00a9;
+    transform: translateX(4px);
+}
+
+.sidebar-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo-img {
+    width: 100px;
+    height: auto;
+    display: block;
+}
+
+.sidebar-title {
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 8px;
+    text-align: center;
+}
