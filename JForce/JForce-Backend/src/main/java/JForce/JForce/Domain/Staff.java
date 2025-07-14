@@ -1,6 +1,7 @@
 package JForce.JForce.Domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -52,25 +53,23 @@ public class Staff {
     private String graduationStatus;
 
     @ManyToOne
-    @JoinColumn(name = "unit_id", nullable = false)
+    @JoinColumn(name = "unit_id")
     private Unit unit;
 
     @ManyToOne
-    @JoinColumn(name = "work_id", nullable = false)
+    @JoinColumn(name = "work_id")
+
     private Work work;
 
     @Column(name = "working_status", nullable = false)
     private Boolean workingStatus = false;
 
-    @Lob
-    @Column(name = "photo")
-    private byte[] photo;
 
-    @Column(name = "password", nullable = false, length = Integer.MAX_VALUE)
+    @Column(name = "password", length = Integer.MAX_VALUE)
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false,name = "role")
     private UserRole role;
 
     public Long getId() {
@@ -177,13 +176,7 @@ public class Staff {
         this.workingStatus = workingStatus;
     }
 
-    public byte[] getPhoto() {
-        return photo;
-    }
 
-    public void setPhoto(byte[] photo) {
-        this.photo = photo;
-    }
 
     public String getPassword() {
         return password;

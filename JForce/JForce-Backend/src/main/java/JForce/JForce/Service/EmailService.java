@@ -53,8 +53,43 @@ public class EmailService {
             String emailContent = String.format("""
             <p>Dear %s,</p>
             <p>Your password has been reset.</p>
-            <p><b>If you did not do this, please ignore the email.</b</p>
+            <p><b>If you did not do this, please ignore this mail.</b</p>
             <p><b>New Password:</b> %s</p>
+            <p>Please log in using this password and change it immediately for security reasons.</p>
+            <p>Please not that this token is only available 15 minutes after send another request 24 hours later!</p>
+            <p>Best regards,<br>JForce Inventory Team</p>
+        """, username, plainPassword);
+
+            helper.setText(emailContent, true);
+            mailSender.send(mimeMessage);
+
+            System.out.println(" Password reset email sent to: " + staffMail);
+
+        } catch (MessagingException e) {
+            System.err.println(" Failed to send password reset email to: " + staffMail);
+            e.printStackTrace();
+        }
+    }
+
+
+    public void FirstPassword(String staffMail, String username, String plainPassword) {
+        if (staffMail == null || staffMail.isBlank()) {
+            System.err.println("Staff email is null or empty.");
+            return;
+        }
+
+        try {
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+
+            helper.setTo(staffMail);
+            helper.setSubject("First Login Password - JForce Inventory System");
+
+            String emailContent = String.format("""
+            <p>Dear %s,</p>
+            <p>You need to register to the system </p>
+            <p><b>If you did not do this, please ignore this mail.</b</p>
+            <p><b>Please Register via link:</b> %s</p>
             <p>Please log in using this password and change it immediately for security reasons.</p>
             <p>Please not that this token is only available 15 minutes after send another request 24 hours later!</p>
             <p>Best regards,<br>JForce Inventory Team</p>

@@ -1,45 +1,15 @@
 package JForce.JForce.Service.DTO;
 
+import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
+
 public class StaffRequestDTO {
 
-
-    private Long id;
-    private String username;
-    private String name;
-    private String surname;
-    private String sex;
-    private LocalDate dateOfBirth;
-    private String maritalStatus;
-    private String turkishIdentity;
-    private Integer registrationNumber;
-    private String graduationStatus;
-    @JsonProperty("unit_id")
-    private Integer unit_id;
-    @JsonProperty("work_id")
-
-    private Integer work_id;
-    private Boolean workingStatus;
-    private byte[] photo;
-    private String password;
-    private String role;
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    private String email;
 
     public Long getId() {
         return id;
@@ -48,6 +18,71 @@ public class StaffRequestDTO {
     public void setId(Long id) {
         this.id = id;
     }
+
+    @JsonProperty("id")
+    private Long id;
+
+    @JsonProperty("username")
+    private String username;
+
+    @JsonProperty("name")
+    private String name;
+
+    @JsonProperty("surname")
+    private String surname;
+
+    @JsonProperty("mail")
+    private String mail;
+
+    @JsonProperty("sex")
+    private String sex;
+
+    @JsonProperty("dateOfBirth")
+    private LocalDate dateOfBirth;
+
+    @JsonProperty("turkishIdentity")
+    private String turkishIdentity;
+
+    @JsonProperty("maritalStatus")
+    private String maritalStatus;
+
+    @JsonProperty("graduationStatus")
+    private String graduationStatus;
+
+    @JsonProperty("registrationNumber")
+    private Integer registrationNumber;
+
+    public Long getUnitId() {
+        return unitId;
+    }
+
+    public void setUnitId(Long unitId) {
+        this.unitId = unitId;
+    }
+
+    @JsonProperty("unit_id")
+    private Long unitId;
+
+    public Long getWorkId() {
+        return workId;
+    }
+
+    public void setWorkId(Long workId) {
+        this.workId = workId;
+    }
+
+    @JsonProperty("work_id")
+    private Long workId;
+
+
+    @JsonProperty("workingStatus")
+    private Boolean workingStatus;
+
+    @JsonProperty("password")
+    private String password;
+
+    @JsonProperty("role")
+    private String role;
 
     public String getUsername() {
         return username;
@@ -73,6 +108,14 @@ public class StaffRequestDTO {
         this.surname = surname;
     }
 
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
     public String getSex() {
         return sex;
     }
@@ -89,14 +132,6 @@ public class StaffRequestDTO {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public String getMaritalStatus() {
-        return maritalStatus;
-    }
-
-    public void setMaritalStatus(String maritalStatus) {
-        this.maritalStatus = maritalStatus;
-    }
-
     public String getTurkishIdentity() {
         return turkishIdentity;
     }
@@ -105,12 +140,12 @@ public class StaffRequestDTO {
         this.turkishIdentity = turkishIdentity;
     }
 
-    public Integer getRegistrationNumber() {
-        return registrationNumber;
+    public String getMaritalStatus() {
+        return maritalStatus;
     }
 
-    public void setRegistrationNumber(Integer registrationNumber) {
-        this.registrationNumber = registrationNumber;
+    public void setMaritalStatus(String maritalStatus) {
+        this.maritalStatus = maritalStatus;
     }
 
     public String getGraduationStatus() {
@@ -121,6 +156,14 @@ public class StaffRequestDTO {
         this.graduationStatus = graduationStatus;
     }
 
+    public Integer getRegistrationNumber() {
+        return registrationNumber;
+    }
+
+    public void setRegistrationNumber(Integer registrationNumber) {
+        this.registrationNumber = registrationNumber;
+    }
+
 
 
     public Boolean getWorkingStatus() {
@@ -129,14 +172,6 @@ public class StaffRequestDTO {
 
     public void setWorkingStatus(Boolean workingStatus) {
         this.workingStatus = workingStatus;
-    }
-
-    public byte[] getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(byte[] photo) {
-        this.photo = photo;
     }
 
     public String getPassword() {
@@ -155,19 +190,4 @@ public class StaffRequestDTO {
         this.role = role;
     }
 
-    public Integer getUnit_id() {
-        return unit_id;
-    }
-
-    public void setUnit_id(Integer unit_id) {
-        this.unit_id = unit_id;
-    }
-
-    public Integer getWork_id() {
-        return work_id;
-    }
-
-    public void setWork_id(Integer work_id) {
-        this.work_id = work_id;
-    }
 }

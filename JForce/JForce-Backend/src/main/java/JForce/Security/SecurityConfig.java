@@ -2,6 +2,7 @@ package JForce.Security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,7 +29,13 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/api/staff/save").permitAll()
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/api/staff/save").permitAll()
+                        .requestMatchers("/api/staff/all").permitAll()
+                        .requestMatchers("/api/staff/update").permitAll()
+                        .requestMatchers("/api/staff/register").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/staff/**").hasAuthority("Human_Resources")
+                        .requestMatchers("/api/staff/**").hasAuthority("Human_Resources")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

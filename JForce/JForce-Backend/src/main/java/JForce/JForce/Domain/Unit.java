@@ -1,9 +1,6 @@
 package JForce.JForce.Domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -14,18 +11,17 @@ import org.hibernate.annotations.ColumnDefault;
 @Table(name = "\"Unit\"")
 public class Unit {
     @Id
-    @ColumnDefault("nextval('unit_id_seq')")
-    @Column(name = "id")
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(name = "name", nullable = false, length = 50)
+    @Column(name = "name", length = 50)
     private String name;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

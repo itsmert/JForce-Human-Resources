@@ -5,18 +5,39 @@ import {
 } from "recharts";
 import "./HRChartsPanel.css";
 
-const HRChartsPanel = () => {
-    const departmentData = [
-        { name: "IT", value: 1 },
-        { name: "HR", value: 2 },
-    ];
+/**
+ * Component to render department and position statistics using charts.
+ */
+const HRChartsPanel = ({ staffList }) => {
+    // Department (unit) data
+    const departmentCounts = staffList.reduce((acc, staff) => {
+        const unitName = staff.unit?.name || "Unknown";
+        acc[unitName] = (acc[unitName] || 0) + 1;
+        return acc;
+    }, {});
+    const departmentData = Object.entries(departmentCounts).map(([name, value]) => ({ name, value }));
 
-    const positionData = [
-        { name: "Backend Developer", value: 1 },
-        { name: "HR Manager", value: 1 },
-    ];
+    // Unique colors for each bar in BarChart
+    const barColors = ["#8cd9b3", "#b39ddb", "#ffbb28", "#ff8042", "#ffa07a", "#a6d854", "#ffd92f"];
 
-    const COLORS = ["#8cd9b3", "#b39ddb"];
+    // Role mapping
+    const roleLabelMap = {
+        Admin: "Admin",
+        Human_Resources: "HR",
+        Inventory_Manager: "Inventory"
+    };
+
+    const positionCounts = staffList.reduce((acc, staff) => {
+        const role = staff.role || "Unknown";
+        acc[role] = (acc[role] || 0) + 1;
+        return acc;
+    }, {});
+    const positionData = Object.entries(positionCounts).map(([key, value]) => ({
+        name: roleLabelMap[key] || key,
+        value
+    }));
+
+    const pieColors = ["#8cd9b3", "#b39ddb", "#ffbb28", "#ff8042"];
 
     return (
         <div className="chart-container">
@@ -25,18 +46,23 @@ const HRChartsPanel = () => {
                 <ResponsiveContainer width="100%" height={300}>
                     <BarChart data={departmentData}>
                         <XAxis dataKey="name" stroke="#fff" />
-                        <YAxis
-                            stroke="#fff"
-                            tickFormatter={(tick) => Number.isInteger(tick) ? tick : ''}
-                        />
+                        <YAxis stroke="#fff" tickFormatter={tick => Number.isInteger(tick) ? tick : ''} />
                         <Tooltip />
-                        <Bar dataKey="value" fill="#8cd9b3" />
+                        {departmentData.map((entry, index) => (
+                            <Bar
+                                key={`bar-${index}`}
+                                dataKey="value"
+                                fill={barColors[index % barColors.length]}
+                                xAxisId={0}
+                                barSize={40}
+                            />
+                        ))}
                     </BarChart>
                 </ResponsiveContainer>
             </div>
 
             <div className="chart-card">
-                <h3 className="chart-title">Staff by Position</h3>
+                <h3 className="chart-title">Staff by Role</h3>
                 <ResponsiveContainer width="100%" height={300}>
                     <PieChart>
                         <Pie
@@ -48,7 +74,7 @@ const HRChartsPanel = () => {
                             dataKey="value"
                         >
                             {positionData.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                <Cell key={`cell-${index}`} fill={pieColors[index % pieColors.length]} />
                             ))}
                         </Pie>
                         <Legend />

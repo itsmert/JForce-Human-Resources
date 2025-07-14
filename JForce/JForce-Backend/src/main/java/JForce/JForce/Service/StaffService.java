@@ -1,13 +1,16 @@
 package JForce.JForce.Service;
 
 import JForce.JForce.Domain.Staff;
+import JForce.JForce.Domain.Unit;
 import JForce.JForce.Domain.UserRole;
+import JForce.JForce.Domain.Work;
 import JForce.JForce.Repository.StaffRepository;
 import JForce.JForce.Repository.UnitRepository;
 import JForce.JForce.Repository.WorkRepository;
 import JForce.JForce.Service.DTO.StaffFilterResponseDTO;
 import JForce.JForce.Service.DTO.StaffLoginResponseDTO;
 import JForce.JForce.Service.DTO.StaffRequestDTO;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -45,8 +48,16 @@ public class StaffService {
      * @return the saved staff entity
      */
     public Staff saveStaff(StaffRequestDTO dto) {
+
         validateRequiredFields(dto);
-        Staff staff = mapDtoToEntity(dto, new Staff());
+        Staff staff = mapDtoToEntity(dto);
+        if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
+            if (!dto.getPassword().startsWith("$2a$")) {
+                staff.setPassword(passwordEncoder.encode(dto.getPassword()));
+            } else {
+                staff.setPassword(dto.getPassword());
+            }
+        }
         return staffRepository.save(staff);
     }
 
@@ -57,13 +68,48 @@ public class StaffService {
      * @return the updated staff entity
      */
     public Staff updateStaff(StaffRequestDTO dto) {
+
+
         if (dto.getId() == null) {
             throw new IllegalArgumentException("Staff ID must not be null for update operation.");
         }
-        Staff staff = staffRepository.findById(dto.getId())
-                .orElseThrow(() -> new RuntimeException("Staff not found with ID: " + dto.getId()));
+
         validateRequiredFields(dto);
-        staff = mapDtoToEntity(dto, staff);
+
+        Staff staff = staffRepository.findById(dto.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Staff not found with id: " + dto.getId()));
+
+        // Unit ilişkisini güncelle
+        Unit unit = unitRepository.findById(dto.getUnitId())
+                .orElseThrow(() -> new EntityNotFoundException("Unit not found with id: " + dto.getUnitId()));
+        staff.setUnit(unit);
+
+        // Work ilişkisini güncelle
+        Work work = workRepository.findById(dto.getWorkId())
+                .orElseThrow(() -> new EntityNotFoundException("Work not found with id: " + dto.getWorkId()));
+        staff.setWork(work);
+
+        // Diğer alanları güncelle
+        staff.setUsername(dto.getUsername());
+        staff.setName(dto.getName());
+        staff.setSurname(dto.getSurname());
+        staff.setMail(dto.getMail());
+        staff.setSex(dto.getSex());
+        staff.setDateOfBirth(dto.getDateOfBirth());
+        staff.setTurkishIdentity(dto.getTurkishIdentity());
+        staff.setMaritalStatus(dto.getMaritalStatus());
+        staff.setGraduationStatus(dto.getGraduationStatus());
+        staff.setRegistrationNumber(dto.getRegistrationNumber());
+        staff.setWorkingStatus(dto.getWorkingStatus());
+        staff.setRole(resolveRole(dto.getRole()));
+        /*if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
+            if (!dto.getPassword().startsWith("$2a$")) {
+                staff.setPassword(passwordEncoder.encode(dto.getPassword()));
+            } else {
+                staff.setPassword(dto.getPassword());
+            }
+        }*/
+
         return staffRepository.save(staff);
     }
 
@@ -71,10 +117,10 @@ public class StaffService {
      * Validates required foreign key fields before saving.
      */
     private void validateRequiredFields(StaffRequestDTO dto) {
-        if (dto.getUnit_id() == null) {
+        if (dto.getUnitId() == null) {
             throw new IllegalArgumentException("Unit ID must not be null.");
         }
-        if (dto.getWork_id() == null) {
+        if (dto.getWorkId() == null) {
             throw new IllegalArgumentException("Work ID must not be null.");
         }
         if (dto.getRole() == null || dto.getRole().isEmpty()) {
@@ -82,32 +128,27 @@ public class StaffService {
         }
     }
 
-    /**
-     * Maps a StaffRequestDTO to a Staff entity.
-     *
-     * @param dto   the data transfer object
-     * @param staff the staff entity to be filled
-     * @return the filled staff entity
-     */
-    private Staff mapDtoToEntity(StaffRequestDTO dto, Staff staff) {
+
+    private Staff mapDtoToEntity(StaffRequestDTO dto) {
+        Staff staff = staffRepository.findById(dto.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Staff not found with id: " + dto.getId()));
+
         staff.setUsername(dto.getUsername());
         staff.setName(dto.getName());
         staff.setSurname(dto.getSurname());
+        staff.setMail(dto.getMail());
         staff.setSex(dto.getSex());
         staff.setDateOfBirth(dto.getDateOfBirth());
-        staff.setMaritalStatus(dto.getMaritalStatus());
         staff.setTurkishIdentity(dto.getTurkishIdentity());
-        staff.setRegistrationNumber(dto.getRegistrationNumber());
+        staff.setMaritalStatus(dto.getMaritalStatus());
         staff.setGraduationStatus(dto.getGraduationStatus());
-        staff.setUnit(unitRepository.findById(dto.getUnit_id()).orElseThrow(() ->
-                new RuntimeException("Unit not found with ID: " + dto.getUnit_id())));
-        staff.setWork(workRepository.findById(dto.getWork_id()).orElseThrow(() ->
-                new RuntimeException("Work not found with ID: " + dto.getWork_id())));
+        staff.setRegistrationNumber(dto.getRegistrationNumber());
         staff.setWorkingStatus(dto.getWorkingStatus());
-        staff.setPhoto(dto.getPhoto());
-        staff.setPassword(passwordEncoder.encode(dto.getPassword()));
         staff.setRole(UserRole.valueOf(dto.getRole()));
-        staff.setMail(dto.getEmail());
+        staff.setRole(resolveRole(dto.getRole()));
+
+
+
         return staff;
     }
 
@@ -123,6 +164,9 @@ public class StaffService {
         if (staff != null && passwordEncoder.matches(password, staff.getPassword())) {
             return staffRepository.findLoginDTOByUserName(username);
         }
+        System.out.println("Input password: " + password);
+        System.out.println("DB password: " + staff.getPassword());
+        System.out.println("Match? " + passwordEncoder.matches(password, staff.getPassword()));
         return null;
     }
 
@@ -182,6 +226,11 @@ public class StaffService {
     }
 
 
+
+    public List<Staff> getAllStaff() {
+        return staffRepository.findAll();
+    }
+
     /**
      * Sends a password reset email to the staff with the given username.
      *
@@ -224,5 +273,78 @@ public class StaffService {
         staffRepository.save(staff);
         passwordResetTokenService.invalidateToken(token);
         return true;
+    }
+
+    /**
+     * Registers a new staff member and sends a password setup email.
+     *
+     * @param dto the staff data transfer object
+     * @return the saved staff entity
+     */
+    public Staff registerNewStaff(StaffRequestDTO dto) {
+        validateRequiredFields(dto);
+
+        Staff staff = new Staff();
+        staff.setUsername(dto.getUsername());
+        staff.setName(dto.getName());
+        staff.setSurname(dto.getSurname());
+        staff.setMail(dto.getMail());
+        staff.setSex(dto.getSex());
+        staff.setDateOfBirth(dto.getDateOfBirth());
+        staff.setTurkishIdentity(dto.getTurkishIdentity());
+        staff.setMaritalStatus(dto.getMaritalStatus());
+        staff.setGraduationStatus(dto.getGraduationStatus());
+        staff.setRegistrationNumber(dto.getRegistrationNumber());
+        staff.setWorkingStatus(dto.getWorkingStatus());
+        staff.setRole(resolveRole(dto.getRole()));
+
+        // ilişkiler
+        Unit unit = unitRepository.findById(dto.getUnitId())
+                .orElseThrow(() -> new EntityNotFoundException("Unit not found with id: " + dto.getUnitId()));
+        Work work = workRepository.findById(dto.getWorkId())
+                .orElseThrow(() -> new EntityNotFoundException("Work not found with id: " + dto.getWorkId()));
+        staff.setUnit(unit);
+        staff.setWork(work);
+
+        // Şifre eklenmiyor! Kullanıcı mailden belirleyecek
+        Staff saved = staffRepository.save(staff);
+
+        // E-posta gönder
+        sendFirstPassword(saved.getUsername());
+
+        return saved;
+    }
+
+
+    public static UserRole resolveRole(String roleStr) {
+        for (UserRole role : UserRole.values()) {
+            if (role.name().equalsIgnoreCase(roleStr)) {
+                return role;
+            }
+        }
+        throw new IllegalArgumentException("Invalid role: " + roleStr);
+    }
+
+
+    public void sendFirstPassword(String username) {
+        Staff staff = staffRepository.findByUsername(username);
+
+        if (staff == null) {
+            System.out.println("⚠️ No staff found with username: " + username);
+            return;
+        }
+
+        String token = passwordResetTokenService.createPasswordResetToken(username);
+        String resetLink = "http://localhost:3000/reset-password?token=" + token;
+
+        try {
+            emailService.FirstPassword(
+                    staff.getMail(),
+                    staff.getUsername(),
+                    resetLink
+            );
+        } catch (Exception e) {
+            throw new RuntimeException(" Failed to send reset email to " + staff.getUsername(), e);
+        }
     }
 }

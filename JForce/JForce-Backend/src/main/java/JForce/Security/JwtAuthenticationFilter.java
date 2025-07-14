@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -13,35 +14,16 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Collections;
 
-/**
- * This filter intercepts each HTTP request once and checks for a valid JWT token
- * in the Authorization header. If valid, it sets the authentication in the SecurityContext.
- */
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
 
-
-    /**
-     * Default Constructor For Java Web Token Filter for Authentication
-     * @param jwtUtil
-     */
     @Autowired
     public JwtAuthenticationFilter(JWTUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
     }
 
-    /**
-     * Filters each request to check for a valid JWT in the Authorization header.
-     * If the token is valid, it sets the authentication in the Spring Security context.
-     *
-     * @param request     HTTP request from the client
-     * @param response    HTTP response returned to the client
-     * @param filterChain The filter chain to pass the request/response to the next filter
-     * @throws ServletException If any servlet-related error occurs
-     * @throws IOException      If any I/O error occurs
-     */
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -50,17 +32,30 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
-        if (authHeader != null && authHeader.startsWith("Bearer")) {
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
 
             if (jwtUtil.validateToken(token)) {
                 String username = jwtUtil.extractUsername(token);
+                String role = jwtUtil.extractRole(token);
+
+                System.out.println("✅ JWT TOKEN GEÇERLİ");
+                System.out.println("👤 Username: " + username);
+                System.out.println("🎭 Role: " + role);
 
                 UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
+                        new UsernamePasswordAuthenticationToken(
+                                username,
+                                null,
+                                Collections.singletonList(new SimpleGrantedAuthority(role))
+                        );
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+            } else {
+                System.out.println("❌ JWT TOKEN GEÇERSİZ");
             }
+        } else {
+            System.out.println("⚠️ Authorization header yok veya Bearer ile başlamıyor.");
         }
 
         filterChain.doFilter(request, response);

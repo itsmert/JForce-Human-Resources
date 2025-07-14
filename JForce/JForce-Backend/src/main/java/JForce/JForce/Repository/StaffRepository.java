@@ -42,4 +42,7 @@ public interface StaffRepository extends JpaRepository<Staff, Long> {
             @Param("unitId") Integer unitId,
             @Param("email") String email
     );
+
+        @Query("SELECT s FROM Staff s LEFT JOIN FETCH s.unit LEFT JOIN FETCH s.work")
+        List<Staff> findAllWithDetails();
 }

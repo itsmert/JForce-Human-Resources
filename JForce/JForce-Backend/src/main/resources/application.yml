@@ -84,10 +84,9 @@ logging:
         type:
           descriptor:
             sql: off
-    gp.graduationproject.summer_internship_back: info
 
 
 
 
 jwt:
-  secret: nobody-cant-assume-that
+  secret: nobody-cant-assume-that-you-can-hack-it-123
