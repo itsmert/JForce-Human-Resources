@@ -45,4 +45,9 @@ public interface StaffRepository extends JpaRepository<Staff, Long> {
 
         @Query("SELECT s FROM Staff s LEFT JOIN FETCH s.unit LEFT JOIN FETCH s.work")
         List<Staff> findAllWithDetails();
+
+
+    boolean existsByUsername(String username);
+    boolean existsByUsernameAndIdNot(String username, Long id);
+    boolean existsByMailAndIdNot(String mail, Long id);
 }

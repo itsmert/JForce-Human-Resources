@@ -18,8 +18,23 @@ public class InventoryRequestDTO {
     @NotNull
     private Integer id;
 
-    @NotBlank
-    private String type;
+
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    private Integer typeId;
+
+    public Integer getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(Integer typeId) {
+        this.typeId = typeId;
+    }
+
+
 
     @NotNull
     @FutureOrPresent
@@ -47,13 +62,7 @@ public class InventoryRequestDTO {
 
     private Long staffId;
 
-    public String getType() {
-        return type;
-    }
 
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public LocalDate getEntryDate() {
         return entryDate;

@@ -21,7 +21,7 @@ public class Staff {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "username", nullable = false, length = 50)
+    @Column(name = "username", nullable = false, length = 50,unique = true)
     private String username;
 
     @Column(name="mail",nullable = false,length = 100)
@@ -42,7 +42,7 @@ public class Staff {
     @Column(name = "marital_status", nullable = false, length = 20)
     private String maritalStatus;
 
-    @Column(name = "turkish_identity", nullable = false, length = 11)
+    @Column(name = "turkish_identity", nullable = false, length = 11,unique = true)
     @Pattern(regexp = "^[1-9][0-9]{9}[02468]$")
     private String turkishIdentity;
 

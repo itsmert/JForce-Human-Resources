@@ -1,21 +1,18 @@
 import React, { useState } from 'react';
 import './HumanResourcesUserMenu.css';
+import { useNavigate } from 'react-router-dom';
 
-const HumanResourcesUserMenu = ({ username, onLogout, onViewProfile }) => {
+const HumanResourcesUserMenu = ({ username, onViewProfile }) => {
     const [showMenu, setShowMenu] = useState(false);
+    const navigate = useNavigate();
 
     const toggleMenu = () => {
         setShowMenu(!showMenu);
     };
 
     const handleLogout = () => {
-        setShowMenu(false);
-        onLogout();
-    };
-
-    const handleViewProfile = () => {
-        setShowMenu(false);
-        onViewProfile();
+        localStorage.removeItem("token");
+        navigate("/..");
     };
 
     return (
@@ -25,7 +22,6 @@ const HumanResourcesUserMenu = ({ username, onLogout, onViewProfile }) => {
             </div>
             {showMenu && (
                 <div className="dropdown-menu">
-                    <div onClick={handleViewProfile}>🔍 View Profile</div>
                     <div onClick={handleLogout}>🚪 Logout</div>
                 </div>
             )}

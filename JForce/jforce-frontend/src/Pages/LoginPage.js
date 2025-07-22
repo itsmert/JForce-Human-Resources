@@ -16,7 +16,7 @@ const LoginPage = () => {
     const navigate = useNavigate();
 
     const handleLogin = async () => {
-        console.log("Login clicked"); // TEST amaçlı ekle
+        console.log("Login clicked");
 
         try {
             const response = await axios.post('http://localhost:8080/auth/login', {

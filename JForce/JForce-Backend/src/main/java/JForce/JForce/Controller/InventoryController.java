@@ -18,10 +18,10 @@ public class InventoryController {
         this.inventoryService = inventoryService;
     }
 
-    @GetMapping("/filter")
+   /* @GetMapping("/filter")
     public ResponseEntity<List<Inventory>> filterInventory(@RequestParam(required = false) String type) {
         return ResponseEntity.ok(inventoryService.filterByType(type));
-    }
+    }*/
 
     @PostMapping("/save")
     public ResponseEntity<Inventory> saveInventory(@RequestBody @Valid InventoryRequestDTO dto) {

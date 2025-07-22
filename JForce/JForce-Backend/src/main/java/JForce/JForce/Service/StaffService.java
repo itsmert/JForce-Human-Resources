@@ -14,7 +14,9 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.List;
 import java.util.List;
 import java.util.Optional;
 
@@ -91,6 +93,10 @@ public class StaffService {
 
         // Diğer alanları güncelle
         staff.setUsername(dto.getUsername());
+
+        if (staffRepository.existsByUsernameAndIdNot(dto.getUsername(), dto.getId())) {
+            throw new IllegalArgumentException("Username is already used by another staff.");
+        }
         staff.setName(dto.getName());
         staff.setSurname(dto.getSurname());
         staff.setMail(dto.getMail());
@@ -102,13 +108,7 @@ public class StaffService {
         staff.setRegistrationNumber(dto.getRegistrationNumber());
         staff.setWorkingStatus(dto.getWorkingStatus());
         staff.setRole(resolveRole(dto.getRole()));
-        /*if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
-            if (!dto.getPassword().startsWith("$2a$")) {
-                staff.setPassword(passwordEncoder.encode(dto.getPassword()));
-            } else {
-                staff.setPassword(dto.getPassword());
-            }
-        }*/
+
 
         return staffRepository.save(staff);
     }
@@ -133,7 +133,13 @@ public class StaffService {
         Staff staff = staffRepository.findById(dto.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Staff not found with id: " + dto.getId()));
 
+
+
         staff.setUsername(dto.getUsername());
+
+        if (staffRepository.existsByUsername(dto.getUsername())) {
+            throw new IllegalArgumentException("Username already exists.");
+        }
         staff.setName(dto.getName());
         staff.setSurname(dto.getSurname());
         staff.setMail(dto.getMail());
@@ -347,4 +353,31 @@ public class StaffService {
             throw new RuntimeException(" Failed to send reset email to " + staff.getUsername(), e);
         }
     }
+    public String generateCsvOfAllStaff() {
+        List<Staff> staffList = staffRepository.findAll();
+
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+
+        pw.println("ID;Name;Surname;Username;Mail;TurkishIdentity;Role;WorkingStatus;Unit;Work;DateOfBirth");
+
+        for (Staff s : staffList) {
+            pw.printf("%d;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s\n",
+                    s.getId(),
+                    s.getName(),
+                    s.getSurname(),
+                    s.getUsername(),
+                    s.getMail(),
+                    s.getTurkishIdentity(),
+                    s.getRole().toString(),
+                    s.getWorkingStatus() ? "Active" : "Passive",
+                    s.getUnit() != null ? s.getUnit().getName() : "",
+                    s.getWork() != null ? s.getWork().getName() : "",
+                    s.getDateOfBirth() != null ? s.getDateOfBirth().toString() : ""
+            );
+        }
+
+        return sw.toString();
+    }
+
 }

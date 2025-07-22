@@ -1,0 +1,102 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: "Segoe UI", sans-serif;
+}
+
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+/* Ana Container */
+.entry-exit-wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 40px;
+    position: relative;
+    z-index: 1;
+}
+
+.staff-list,
+.entry-form {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px #999;
+    flex: 1;
+}
+
+.staff-list table,
+.entry-history-table table,
+.all-entry-exit-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.staff-list th,
+.staff-list td,
+.entry-history-table th,
+.entry-history-table td,
+.all-entry-exit-table th,
+.all-entry-exit-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+}
+
+.staff-list button,
+.entry-form button {
+    padding: 6px 12px;
+    background-color: #3b82f6;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+}
+
+.entry-form input,
+.entry-form textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.entry-history-table {
+    margin-top: 20px;
+}
+
+.entry-form h3 {
+    margin-top: 0;
+}
+
+.all-entry-exit-table {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px #999;
+}
+
+@media screen and (min-width: 1024px) {
+    .entry-exit-wrapper {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .staff-list, .entry-form {
+        width: 48%;
+    }
+
+    .all-entry-exit-table {
+        width: 100%;
+    }
+}

@@ -1,5 +1,6 @@
 import React from 'react';
 import './HumanResourcesSideBar.css';
+import { Link } from 'react-router-dom';
 
 const HumanResourcesSideBar = ({ onNewStaff }) => {
     return (
@@ -11,10 +12,20 @@ const HumanResourcesSideBar = ({ onNewStaff }) => {
             </div>
             <h3>📁 Menu</h3>
             <ul>
-                <li onClick={onNewStaff}>➕ New Staff</li>
-                <li>📊 Reports</li>
-                <li>📝 Leave Requests</li>
-                <li>📥 Export Data</li>
+                <li>
+                    <Link to="/new-staff" className="sidebar-link">➕ New Staff</Link>
+                </li>
+
+                <li>
+                    <Link to="/reports" className="sidebar-link">📊 Reports</Link>
+                </li>
+                <li>
+                    <Link to="/staff-entry-exit" className="sidebar-link">➡ Staff Entry Exit Status</Link>
+                </li>
+                <li>
+                    <Link to="/inventory-assignment" className="sidebar-link">📦 Inventory Assignments</Link>
+                </li>
+
             </ul>
         </div>
     );

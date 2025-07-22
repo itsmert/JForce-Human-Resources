@@ -16,14 +16,14 @@ import java.time.LocalDate;
 @Table(name = "\"Inventory\"")
 public class Inventory {
     @Id
-    @ColumnDefault("nextval('inventory_id_seq')")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "inventory_id_seq_gen")
+    @SequenceGenerator(name = "inventory_id_seq_gen", sequenceName = "inventory_id_seq", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Size(max = 100)
-    @NotNull
-    @Column(name = "type", nullable = false, length = 100)
-    private String type;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "type_id", nullable = false)
+    private InventoryType type;
 
     @FutureOrPresent(message = "Entry date cannot be in the past")
     @Column(name = "entry_date", nullable = false)
@@ -94,13 +94,7 @@ public class Inventory {
         this.entryDate = entryDate;
     }
 
-    public String getType() {
-        return type;
-    }
 
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public Integer getId() {
         return id;
@@ -113,4 +107,12 @@ public class Inventory {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "staff_id")
     private Staff assignedStaff;
+
+    public InventoryType getType() {
+        return type;
+    }
+
+    public void setType(InventoryType type) {
+        this.type = type;
+    }
 }

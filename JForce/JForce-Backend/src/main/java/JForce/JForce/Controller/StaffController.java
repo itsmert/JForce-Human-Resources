@@ -6,11 +6,15 @@
     import JForce.JForce.Service.DTO.StaffRequestDTO;
     import JForce.JForce.Service.StaffService;
     import lombok.RequiredArgsConstructor;
+    import org.springframework.http.HttpHeaders;
+    import org.springframework.http.HttpStatus;
+    import org.springframework.http.MediaType;
     import org.springframework.http.ResponseEntity;
     import org.springframework.security.access.prepost.PreAuthorize;
     import org.springframework.web.bind.annotation.*;
     import org.springframework.web.multipart.MultipartFile;
 
+    import java.nio.charset.StandardCharsets;
     import java.util.List;
     import java.util.Optional;
 
@@ -98,5 +102,21 @@
         public ResponseEntity<Void> deleteStaff(@PathVariable Long id) {
             staffService.deleteStaff(id);
             return ResponseEntity.ok().build();
+        }
+
+        @GetMapping("/export/csv")
+        @PreAuthorize("hasAuthority('Human_Resources')")
+        public ResponseEntity<byte[]> exportStaffAsCsv() {
+            String csvContent = staffService.generateCsvOfAllStaff();
+
+            String csvWithBom = "\uFEFF" + csvContent;
+
+            byte[] csvBytes = csvWithBom.getBytes(StandardCharsets.UTF_8);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=staff_report.csv");
+            headers.setContentType(MediaType.parseMediaType("text/csv; charset=UTF-8"));
+
+            return new ResponseEntity<>(csvBytes, headers, HttpStatus.OK);
         }
     }

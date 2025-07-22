@@ -1,6 +1,7 @@
 package JForce.JForce.Service;
 import JForce.JForce.Repository.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -98,11 +99,20 @@ public class EmailService {
             helper.setText(emailContent, true);
             mailSender.send(mimeMessage);
 
-            System.out.println(" Password reset email sent to: " + staffMail);
+            System.out.println(" Password  email sent to: " + staffMail);
 
         } catch (MessagingException e) {
             System.err.println(" Failed to send password reset email to: " + staffMail);
             e.printStackTrace();
         }
+    }
+
+
+    public void sendMail(String to, String subject, String body) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(body);
+        mailSender.send(message);
     }
 }
